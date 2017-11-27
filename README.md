@@ -10,3 +10,5 @@ The simple Markov example: https://github.com/txizzle/MarkovRapGenerator
 The video of Markov: https://www.youtube.com/watch?v=yE0dcDNRZjw&feature=youtu.be
 
 github of espeak: https://github.com/relsi/python-espeak
+
+phoneme list: http://espeak.sourceforge.net/phonemes.html
