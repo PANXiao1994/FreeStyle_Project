@@ -79,9 +79,7 @@ class PLSA:
             """
             update the distribution of the documents of the themes
             """
-            doc['topic'] = doc['topic'] - doc['topic']
-
-            topic_doc = doc['topic']
+            topic_doc = doc['topic'] - doc['topic']
             words = doc['words']
             for (word_index,word) in words.items():
                 topic_doc += word['count']*word['topic_word']
@@ -134,6 +132,7 @@ class PLSA:
                     topic_word[i] = probility_word_given_topic.value[i,word_index]*topic_doc[i]
                 #使该单词各主题分布概率和为1
                 topic_word /= np.sum(topic_word)
+                word['topic_word'] = topic_word # added
             return {'words':words,'topic':topic_doc}
 
         self.data = self.data.map(update_probility_of_word_topic_given_word)
@@ -177,7 +176,7 @@ class PLSA:
             topics = rd.value.uniform(0, 1, k.value)
             topics = topics/np.sum(topics)
             return {'words':wordcount,'topic':topics}
-        self.data = self.ori_data.map(lambda x: _word_count_doc_(x))
+        self.data = self.ori_data.map(_word_count_doc_)
 
     def _init_dict_(self):
         """
@@ -204,6 +203,8 @@ class PLSA:
                 l += word['count']*np.log(np.matrix(topic_doc)*probility_word_given_topic.value[:,word_index])
             return l
         return self.data.map(likelyhood).sum()
+
+
 
     def save(self,f_word_given_topic,f_doc_topic):
         """
